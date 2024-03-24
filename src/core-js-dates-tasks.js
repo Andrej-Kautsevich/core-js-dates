@@ -17,9 +17,8 @@
  * '01 Jan 1970 00:00:00 UTC' => 0
  * '04 Dec 1995 00:12:00 UTC' => 818035920000
  */
-function dateToTimestamp(/* date */) {
-  throw new Error('Not implemented');
-  // return new Date(date).valueOf();
+function dateToTimestamp(date) {
+  return new Date(date).valueOf();
 }
 
 /**
@@ -33,7 +32,10 @@ function dateToTimestamp(/* date */) {
  * Date(2015, 10, 20, 23, 15, 1) => '23:15:01'
  */
 function getTime(date) {
-  return new Date(date).toLocaleTimeString();
+  return new Intl.DateTimeFormat(undefined, {
+    timeStyle: 'medium',
+    hour12: false,
+  }).format(date);
 }
 
 /**
@@ -47,13 +49,12 @@ function getTime(date) {
  * '03 Dec 1995 00:12:00 UTC' => 'Sunday'
  * '2024-01-30T00:00:00.000Z' => 'Tuesday'
  */
-function getDayName(/* date */) {
-  throw new Error('Not implemented');
-  // const day = new Date(date);
-  // return Intl.DateTimeFormat('en-US', {
-  //   weekday: 'long',
-  //   timeZone: 'UTC',
-  // }).format(day);
+function getDayName(date) {
+  const day = new Date(date);
+  return Intl.DateTimeFormat('en-US', {
+    weekday: 'long',
+    timeZone: 'UTC',
+  }).format(day);
 }
 
 /**
