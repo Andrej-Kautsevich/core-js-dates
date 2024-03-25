@@ -261,8 +261,41 @@ function getQuarter(date) {
  * { start: '01-01-2024', end: '15-01-2024' }, 1, 3 => ['01-01-2024', '05-01-2024', '09-01-2024', '13-01-2024']
  * { start: '01-01-2024', end: '10-01-2024' }, 1, 1 => ['01-01-2024', '03-01-2024', '05-01-2024', '07-01-2024', '09-01-2024']
  */
-function getWorkSchedule(/* period, countWorkDays, countOffDays */) {
-  throw new Error('Not implemented');
+function getWorkSchedule(period, countWorkDays, countOffDays) {
+  const workDays = [];
+  const startDate = new Date(period.start.split('-').reverse().join('-'));
+  const endDate = new Date(period.end.split('-').reverse().join('-'));
+
+  const currentDay = new Date(startDate);
+  let workDaysCount = 0;
+  let offDaysCount = 0;
+
+  while (currentDay <= endDate) {
+    if (workDaysCount < countWorkDays) {
+      workDays.push(
+        currentDay
+          .toLocaleDateString('ru', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+          })
+          .split('.')
+          .join('-')
+      );
+      workDaysCount += 1;
+    } else if (offDaysCount < countOffDays) {
+      offDaysCount += 1;
+    }
+
+    if (workDaysCount === countWorkDays && offDaysCount === countOffDays) {
+      workDaysCount = 0;
+      offDaysCount = 0;
+    }
+
+    currentDay.setDate(currentDay.getDate() + 1);
+  }
+
+  return workDays;
 }
 
 /**
